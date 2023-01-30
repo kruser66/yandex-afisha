@@ -5,7 +5,7 @@ __pycache__/
 
 
 static/
-places/
+places/migrations
 
 # Django stuff:
 *.log
@@ -18,5 +18,3 @@ db.sqlite3-journal
 venv/
 
 .idea/
-
-.idea/yandex-afisha.iml
