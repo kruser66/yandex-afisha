@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse
-from .models import Excursion
+from django.http import JsonResponse
+from .models import Excursion, Image
 
 def index(request):
 
@@ -37,5 +37,17 @@ def place_detail(request, place_id):
     place_id = int(place_id)
 
     place = get_object_or_404(Excursion, pk=place_id)
+    images = place.image_set.all().order_by('order')
 
-    return HttpResponse(f'<h3>{place.title}</h3>')
+    detail = {
+        'title': place.title,
+        'imgs': [img.image.url for img in images],
+        'description_short': place.short_description ,
+        'description_long': place.long_description,
+        'coordinates': {
+            'lng': str(place.longitude),
+            'lat': str(place.latitude)
+        }
+    }
+
+    return JsonResponse(detail, json_dumps_params={'indent': 4, 'ensure_ascii': False})
