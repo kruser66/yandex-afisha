@@ -1,6 +1,6 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, reverse
 from django.http import JsonResponse
-from .models import Excursion, Image
+from .models import Excursion
 
 def index(request):
 
@@ -21,7 +21,7 @@ def index(request):
             'properties': {
                 'title': place.title_place,
                 'placeId': place.pk,
-                'detailsUrl': '.'
+                'detailsUrl': reverse('place_detail', kwargs={'place_id': place.pk})
             }
         }
         geo_places['features'].append(geo_point)
