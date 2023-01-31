@@ -1,3 +1,8 @@
 from django.contrib import admin
+from .models import Excursion
 
-# Register your models here.
+
+@admin.register(Excursion)
+class ExcursionAdmin(admin.ModelAdmin):
+    pass
+
