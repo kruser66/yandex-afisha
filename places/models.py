@@ -11,3 +11,13 @@ class Excursion(models.Model):
     
     def __str__(self):
         return self.title
+
+
+class Image(models.Model):
+
+    excursion = models.ForeignKey('Excursion', on_delete=models.CASCADE)
+    order = models.IntegerField('Порядок показа')
+    image = models.ImageField('Изображение')
+    
+    def __str__(self):
+        return f'{self.order} {self.excursion.title}'
