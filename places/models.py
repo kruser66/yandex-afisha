@@ -8,6 +8,7 @@ class Excursion(models.Model):
     long_description = models.TextField('Полное описание', null=True, blank=True)
     longitude = models.FloatField('Долгота')
     latitude = models.FloatField('Широта')
+    title_place = models.CharField('Имя для карты', max_length=50)
     
     def __str__(self):
         return self.title
