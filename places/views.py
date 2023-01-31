@@ -1,5 +1,5 @@
-
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
+from django.http import HttpResponse
 from .models import Excursion
 
 def index(request):
@@ -31,3 +31,11 @@ def index(request):
     }
 
     return render(request, 'index.html', context)
+
+
+def place_detail(request, place_id):
+    place_id = int(place_id)
+
+    place = get_object_or_404(Excursion, pk=place_id)
+
+    return HttpResponse(f'<h3>{place.title}</h3>')
