@@ -27,12 +27,13 @@ class ExcursionAdmin(SortableAdminBase, admin.ModelAdmin):
     inlines = [
         ImageInline
     ]
+    search_fields = ('title', 'title_place')
 
 @admin.register(Image)
 class ImageAdmin(admin.ModelAdmin):
     readonly_fields = ['preview_image']
-    list_display = ('image', 'preview_image', 'order',)
-    ordering = ['order']
+    list_display = ['excursion', 'preview_image', 'image']
+    list_filter = ['excursion']
 
     def preview_image(self, obj):
         small_width = obj.image.width / (obj.image.height / 150)
