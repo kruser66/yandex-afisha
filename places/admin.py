@@ -1,16 +1,18 @@
 from django.contrib import admin
 from django.utils.html import format_html
+from adminsortable2.admin import SortableAdminMixin, SortableStackedInline, SortableAdminBase
 
 from .models import Excursion, Image
 
 
-class ImageInline(admin.TabularInline):
+class ImageInline(SortableStackedInline):
     model = Image
+    extra = 0
     readonly_fields = ['preview_image']
-    fields = ('image', 'preview_image', 'order',)
+    list_display = ('image', 'preview_image', 'order',)
+    ordering = ['order']
 
     def preview_image(self, obj):
-        print(obj)
         small_width = obj.image.width / (obj.image.height / 150)
         return format_html('<img src="{url}" width="{width}" height={height} />'.format(
             url=obj.image.url,
@@ -21,7 +23,7 @@ class ImageInline(admin.TabularInline):
 
 
 @admin.register(Excursion)
-class ExcursionAdmin(admin.ModelAdmin):
+class ExcursionAdmin(SortableAdminBase, admin.ModelAdmin):
     inlines = [
         ImageInline
     ]
@@ -29,10 +31,10 @@ class ExcursionAdmin(admin.ModelAdmin):
 @admin.register(Image)
 class ImageAdmin(admin.ModelAdmin):
     readonly_fields = ['preview_image']
-    fields = ('image', 'preview_image', 'order',)
+    list_display = ('image', 'preview_image', 'order',)
+    ordering = ['order']
 
     def preview_image(self, obj):
-        print(obj)
         small_width = obj.image.width / (obj.image.height / 150)
         return format_html('<img src="{url}" width="{width}" height={height} />'.format(
             url=obj.image.url,
