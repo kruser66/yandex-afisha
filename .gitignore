@@ -6,9 +6,12 @@ __pycache__/
 #Images
 *.jpg
 media/
+examples/
 
 static/
 places/migrations
+*.json
+
 
 # Django stuff:
 *.log
