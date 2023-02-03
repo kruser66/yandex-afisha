@@ -1,4 +1,5 @@
 import os
+import json
 import requests
 
 from urllib.parse import unquote, urlsplit
@@ -23,16 +24,25 @@ class Command(BaseCommand):
 
         place_url = options['json_url'][0]
         response = requests.get(place_url)
-        place = response.json()
+        response.raise_for_status()
+        try:
+            place = response.json()
+        except json.decoder.JSONDecodeError as err:
+            print('Неверный формат данных')
+            return
 
-        new_excursion = Excursion.objects.create(
-            title=place['title'],
-            short_description=place['description_short'],
-            long_description=place['description_long'],
-            longitude=place['coordinates']['lng'],
-            latitude=place['coordinates']['lat'],
-            title_place=place['title']
-        )
+        try:
+            new_excursion = Excursion.objects.create(
+                title=place['title'],
+                short_description=place['description_short'],
+                long_description=place['description_long'],
+                longitude=place['coordinates']['lng'],
+                latitude=place['coordinates']['lat'],
+                title_place=place['title']
+            )
+        except KeyError:
+            print('Неверный формат данных')
+            return
 
         for index, image_url in enumerate(place['imgs']):
             url = unquote(image_url)
