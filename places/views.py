@@ -4,13 +4,8 @@ from .models import Excursion
 
 
 def index(request):
-    geo_places = {
-        'type': 'FeatureCollection',
-        'features': []
-    }
-
     places = Excursion.objects.all()
-
+    features = []
     for place in places:
         geo_point = {
             'type': 'Feature',
@@ -24,7 +19,12 @@ def index(request):
                 'detailsUrl': reverse('place_detail', kwargs={'place_id': place.pk})
             }
         }
-        geo_places['features'].append(geo_point)
+        features.append(geo_point)
+
+    geo_places = {
+        'type': 'FeatureCollection',
+        'features': features
+    }
 
     context = {
         'geo_places': geo_places
@@ -34,8 +34,6 @@ def index(request):
 
 
 def place_detail(request, place_id):
-    place_id = int(place_id)
-
     place = get_object_or_404(Excursion, pk=place_id)
     images = place.image_set.all().order_by('order')
 
@@ -45,8 +43,8 @@ def place_detail(request, place_id):
         'description_short': place.short_description,
         'description_long': place.long_description,
         'coordinates': {
-            'lng': str(place.longitude),
-            'lat': str(place.latitude)
+            'lng': place.longitude,
+            'lat': place.latitude
         }
     }
 
