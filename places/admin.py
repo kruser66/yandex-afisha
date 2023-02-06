@@ -1,7 +1,6 @@
 from django.contrib import admin
 from django.utils.html import format_html
 from adminsortable2.admin import SortableAdminMixin, SortableStackedInline, SortableAdminBase
-
 from .models import Excursion, Image
 
 
@@ -28,6 +27,7 @@ class ExcursionAdmin(SortableAdminBase, admin.ModelAdmin):
         ImageInline
     ]
     search_fields = ('title', 'title_place')
+
 
 @admin.register(Image)
 class ImageAdmin(admin.ModelAdmin):

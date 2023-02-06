@@ -2,8 +2,8 @@ from django.shortcuts import render, get_object_or_404, reverse
 from django.http import JsonResponse
 from .models import Excursion
 
-def index(request):
 
+def index(request):
     geo_places = {
         'type': 'FeatureCollection',
         'features': []
@@ -42,7 +42,7 @@ def place_detail(request, place_id):
     detail = {
         'title': place.title,
         'imgs': [img.image.url for img in images],
-        'description_short': place.short_description ,
+        'description_short': place.short_description,
         'description_long': place.long_description,
         'coordinates': {
             'lng': str(place.longitude),

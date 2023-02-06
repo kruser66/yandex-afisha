@@ -1,12 +1,11 @@
 import os
 import json
 import requests
-
 from urllib.parse import unquote, urlsplit
 from django.core.files.base import ContentFile
-
 from places.models import Excursion, Image
 from django.core.management.base import BaseCommand
+
 
 class Command(BaseCommand):
     help = '''Загрузка локаций в базу данных по ссылке на JSON-данные.
@@ -28,7 +27,7 @@ class Command(BaseCommand):
         try:
             place = response.json()
         except json.decoder.JSONDecodeError as err:
-            print('Неверный формат данных')
+            print(f'Неверный формат данных. Ошибка: {err}')
             return
 
         try:
@@ -40,8 +39,8 @@ class Command(BaseCommand):
                 latitude=place['coordinates']['lat'],
                 title_place=place['title']
             )
-        except KeyError:
-            print('Неверный формат данных')
+        except KeyError as err:
+            print(f'Неверный формат данных. Ошибка: {err}')
             return
 
         for index, image_url in enumerate(place['imgs']):
@@ -59,5 +58,3 @@ class Command(BaseCommand):
             img.image.save(filename, ContentFile(response.content), save=True)
 
         print(f'Экскурсия: {new_excursion} загружена')
-
-
