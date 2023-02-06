@@ -20,7 +20,6 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **options):
-
         place_url = options['json_url'][0]
         response = requests.get(place_url)
         response.raise_for_status()
@@ -37,7 +36,6 @@ class Command(BaseCommand):
                 long_description=place['description_long'],
                 longitude=place['coordinates']['lng'],
                 latitude=place['coordinates']['lat'],
-                title_place=place['title']
             )
         except KeyError as err:
             print(f'Неверный формат данных. Ошибка: {err}')
@@ -51,8 +49,8 @@ class Command(BaseCommand):
             response.raise_for_status()
 
             img = Image.objects.create(
-                excursion=new_excursion,
                 order=index,
+                excursion=new_excursion,
             )
             img.save()
             img.image.save(filename, ContentFile(response.content), save=True)

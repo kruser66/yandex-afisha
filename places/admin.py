@@ -26,7 +26,7 @@ class ExcursionAdmin(SortableAdminBase, admin.ModelAdmin):
     inlines = [
         ImageInline
     ]
-    search_fields = ('title', 'title_place')
+    search_fields = ('title',)
 
 
 @admin.register(Image)

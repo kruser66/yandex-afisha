@@ -14,7 +14,7 @@ def index(request):
                 'coordinates': [place.longitude, place.latitude]
             },
             'properties': {
-                'title': place.title_place,
+                'title': place.title,
                 'placeId': place.pk,
                 'detailsUrl': reverse('place_detail', kwargs={'place_id': place.pk})
             }
@@ -35,7 +35,7 @@ def index(request):
 
 def place_detail(request, place_id):
     place = get_object_or_404(Excursion, pk=place_id)
-    images = place.image_set.all().order_by('order')
+    images = place.images.order_by('order')
 
     detail = {
         'title': place.title,
