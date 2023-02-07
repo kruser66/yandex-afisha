@@ -18,8 +18,8 @@ class Image(models.Model):
     order = models.PositiveIntegerField('Порядок показа', db_index=True, default=0)
     excursion = models.ForeignKey('Excursion', related_name='images', on_delete=models.CASCADE)
 
-    def __str__(self):
-        return f'{self.order} {self.excursion.title}'
-
     class Meta():
         ordering = ['order']
+
+    def __str__(self):
+        return f'{self.order} {self.excursion.title}'
