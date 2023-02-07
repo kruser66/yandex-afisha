@@ -52,7 +52,7 @@ class Command(BaseCommand):
                     Image.objects.get_or_create(
                         order=index,
                         excursion=new_excursion,
-                        image= ContentFile(content=response.content, name=filename)
+                        image=ContentFile(content=response.content, name=filename)
                     )
             print(f'Экскурсия: {new_excursion} загружена')
         else:

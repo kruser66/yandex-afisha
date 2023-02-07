@@ -21,6 +21,7 @@ class ImageInline(SortableStackedInline):
     def preview_image(self, image):
         return format_preview_image(image)
 
+
 @admin.register(Excursion)
 class ExcursionAdmin(SortableAdminBase, admin.ModelAdmin):
     inlines = [
