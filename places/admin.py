@@ -4,6 +4,13 @@ from adminsortable2.admin import SortableAdminMixin, SortableStackedInline, Sort
 from .models import Excursion, Image
 
 
+def format_preview_image(image, height='200px'):
+    return format_html('<img src="{url}" height="{height}"/>',
+                       url=image.image.url,
+                       height=height,
+                       )
+
+
 class ImageInline(SortableStackedInline):
     model = Image
     extra = 0
@@ -11,15 +18,8 @@ class ImageInline(SortableStackedInline):
     list_display = ('image', 'preview_image', 'order',)
     ordering = ['order']
 
-    def preview_image(self, obj):
-        small_width = obj.image.width / (obj.image.height / 150)
-        return format_html('<img src="{url}" width="{width}" height={height} />'.format(
-            url=obj.image.url,
-            width=small_width,
-            height='150px',
-            )
-        )
-
+    def preview_image(self, image):
+        return format_preview_image(image)
 
 @admin.register(Excursion)
 class ExcursionAdmin(SortableAdminBase, admin.ModelAdmin):
@@ -35,11 +35,5 @@ class ImageAdmin(admin.ModelAdmin):
     list_display = ['excursion', 'preview_image', 'image']
     list_filter = ['excursion']
 
-    def preview_image(self, obj):
-        small_width = obj.image.width / (obj.image.height / 150)
-        return format_html('<img src="{url}" width="{width}" height={height} />'.format(
-            url=obj.image.url,
-            width=small_width,
-            height='150px',
-            )
-        )
+    def preview_image(self, image):
+        return format_preview_image(image)
