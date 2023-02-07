@@ -14,13 +14,12 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument(
-            'json_url',
-            nargs='+',
+            'url',
             help='Ссылка на данные в JSON формате'
         )
 
     def handle(self, *args, **options):
-        place_url = options['json_url'][0]
+        place_url = options['url']
         response = requests.get(place_url)
         response.raise_for_status()
         try:
@@ -48,11 +47,10 @@ class Command(BaseCommand):
             response = requests.get(url)
             response.raise_for_status()
 
-            img = Image.objects.create(
+            Image.objects.create(
                 order=index,
                 excursion=new_excursion,
+                image= ContentFile(content=response.content, name=filename)
             )
-            img.save()
-            img.image.save(filename, ContentFile(response.content), save=True)
 
         print(f'Экскурсия: {new_excursion} загружена')
