@@ -5,21 +5,19 @@ from .models import Excursion, Image
 
 
 def format_preview_image(image, height='200px'):
-    return format_html('<img src="{url}" height="{height}"/>',
-                       url=image.image.url,
-                       height=height,
-                       )
+    return format_html(
+        '<img src="{url}" height="{height}"/>',
+        url=image.image.url,
+        height=height,
+    )
 
 
 class ImageInline(SortableStackedInline):
     model = Image
     extra = 0
-    readonly_fields = ['preview_image']
-    list_display = ('image', 'preview_image', 'order',)
+    readonly_fields = [format_preview_image]
+    list_display = ('image', format_preview_image, 'order',)
     ordering = ['order']
-
-    def preview_image(self, image):
-        return format_preview_image(image)
 
 
 @admin.register(Excursion)
@@ -32,9 +30,7 @@ class ExcursionAdmin(SortableAdminBase, admin.ModelAdmin):
 
 @admin.register(Image)
 class ImageAdmin(admin.ModelAdmin):
-    readonly_fields = ['preview_image']
-    list_display = ['excursion', 'preview_image', 'image']
+    readonly_fields = [format_preview_image]
+    list_display = ['excursion', format_preview_image, 'image']
     list_filter = ['excursion']
 
-    def preview_image(self, image):
-        return format_preview_image(image)
