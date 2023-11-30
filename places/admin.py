@@ -12,7 +12,7 @@ def format_preview_image(image, height='200px'):
     )
 
 
-class ImageInline(SortableStackedInline):
+class ImageStackedInline(SortableStackedInline):
     model = Image
     extra = 0
     readonly_fields = [format_preview_image]
@@ -21,9 +21,9 @@ class ImageInline(SortableStackedInline):
 
 
 @admin.register(Excursion)
-class ExcursionAdmin(SortableAdminBase, admin.ModelAdmin):
+class ExcursionAdmin(SortableAdminMixin, admin.ModelAdmin):
     inlines = [
-        ImageInline
+        ImageStackedInline
     ]
     search_fields = ('title',)
 
