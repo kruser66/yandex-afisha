@@ -21,7 +21,7 @@ class ImageStackedInline(SortableStackedInline):
 
 
 @admin.register(Excursion)
-class ExcursionAdmin(SortableAdminMixin, admin.ModelAdmin):
+class ExcursionAdmin(SortableAdminBase, admin.ModelAdmin):
     inlines = [
         ImageStackedInline
     ]

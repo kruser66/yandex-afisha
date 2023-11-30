@@ -9,9 +9,6 @@ class Excursion(models.Model):
     longitude = models.FloatField('Долгота')
     latitude = models.FloatField('Широта')
 
-    class Meta:
-        ordering = ['images__order']
-
     def __str__(self):
         return self.title
 
